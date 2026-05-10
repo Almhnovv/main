@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Almhnovv</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-play-circle"></i>
+                <h1>Anime переводы Almhnovv</h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#home" class="nav-link active">Главная</a></li>
+                    <li><a href="#catalog" class="nav-link">Каталог</a></li>
+                    <li><a href="#new" class="nav-link">Новинки</a></li>
+                    <li><a href="#popular" class="nav-link">Популярное</a></li>
+                </ul>
+            </nav>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Поиск аниме...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </header>
+
+        <main class="main">
+            <section id="hero" class="hero">
+                <div class="hero-content">
+                    <h2>Добро пожаловать в мир аниме!</h2>
+                    <p>Лучшие переводы аниме от нашего сообщества</p>
+                    <button class="cta-button">Смотреть сейчас</button>
+                </div>
+                <div class="hero-image">
+                    <div class="anime-card featured" onclick="window.open('player.html?id=1', '_blank')">
+                        <div class="anime-poster">
+                            <img src="https://via.placeholder.com/300x450/ff6b6b/ffffff?text=Erekshe+2026" alt="Erekshe">
+                            <div class="anime-overlay">
+                                <button class="play-btn"><i class="fas fa-play"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="new" class="section">
+                <div class="section-header">
+                    <h2>Новые переводы</h2>
+                    <a href="#" class="view-all">Все новинки →</a>
+                </div>
+                <div class="anime-grid" id="newAnime">
+                    <div class="anime-card">
+                        <div class="anime-poster">
+                            <img src="https://via.placeholder.com/200x300/4ecdc4/ffffff?text=Anime+1" alt="Anime 1">
+                            <div class="anime-overlay">
+                                <button class="play-btn"><i class="fas fa-play"></i></button>
+                            </div>
+                        </div>
+                        <div class="anime-info">
+                            <h3>Название аниме 1</h3>
+                            <p class="anime-meta">12 серий • 2024 • Субтитры</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i> 4.8
+                            </div>
+                        </div>
+                    </div>
+                    <div class="anime-card">
+                        <div class="anime-poster">
+                            <img src="https://via.placeholder.com/200x300/45b7d1/ffffff?text=Anime+2" alt="Anime 2">
+                            <div class="anime-overlay">
+                                <button class="play-btn"><i class="fas fa-play"></i></button>
+                            </div>
+                        </div>
+                        <div class="anime-info">
+                            <h3>Название аниме 2</h3>
+                            <p class="anime-meta">24 серии • 2024 • Озвучка</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i> 4.9
+                            </div>
+                        </div>
+                    </div>
+                    <div class="anime-card">
+                        <div class="anime-poster">
+                            <img src="https://via.placeholder.com/200x300/f9ca24/ffffff?text=Anime+3" alt="Anime 3">
+                            <div class="anime-overlay">
+                                <button class="play-btn"><i class="fas fa-play"></i></button>
+                            </div>
+                        </div>
+                        <div class="anime-info">
+                            <h3>Название аниме 3</h3>
+                            <p class="anime-meta">1 сезон • 2023 • Субтитры</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i> 4.7
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="popular" class="section">
+                <div class="section-header">
+                    <h2>Популярные переводы</h2>
+                    <a href="#" class="view-all">Все популярные →</a>
+                </div>
+                <div class="anime-grid" id="popularAnime">
+                    <div class="anime-card">
+                        <div class="anime-poster">
+                            <img src="https://via.placeholder.com/200x300/e74c3c/ffffff?text=Popular+1" alt="Popular 1">
+                            <div class="anime-overlay">
+                                <button class="play-btn"><i class="fas fa-play"></i></button>
+                            </div>
+                        </div>
+                        <div class="anime-info">
+                            <h3>Популярное аниме 1</h3>
+                            <p class="anime-meta">25 серий • 2023 • Озвучка</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i> 4.9
+                            </div>
+                        </div>
+                    </div>
+                    <div class="anime-card">
+                        <div class="anime-poster">
+                            <img src="https://via.placeholder.com/200x300/9b59b6/ffffff?text=Popular+2" alt="Popular 2">
+                            <div class="anime-overlay">
+                                <button class="play-btn"><i class="fas fa-play"></i></button>
+                            </div>
+                        </div>
+                        <div class="anime-info">
+                            <h3>Популярное аниме 2</h3>
+                            <p class="anime-meta">12 серий • 2024 • Субтитры</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i> 4.8
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="catalog" class="section">
+                <div class="section-header">
+                    <h2>Каталог аниме</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-genre="all">Все</button>
+                        <button class="filter-btn" data-genre="action">Экшен</button>
+                        <button class="filter-btn" data-genre="romance">Романтика</button>
+                        <button class="filter-btn" data-genre="comedy">Комедия</button>
+                        <button class="filter-btn" data-genre="fantasy">Фэнтези</button>
+                    </div>
+                </div>
+                <div class="anime-grid" id="catalogAnime">
+                    <!-- Каталог будет заполняться через JavaScript -->
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Anime Translations</h3>
+                    <p>Лучшие переводы аниме для вас</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Категории</h4>
+                    <ul>
+                        <li><a href="#">Новинки</a></li>
+                        <li><a href="#">Популярное</a></li>
+                        <li><a href="#">Онгоинги</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Контакты</h4>
+                    <p>Поддерживаем переводы с 2024 года</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Anime Translations. Все права защищены.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
