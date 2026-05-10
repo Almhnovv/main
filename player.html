@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Плеер - Almhnovv</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .player-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .video-player {
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .player-info {
+            background: var(--dark-secondary);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .player-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .player-meta {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        .player-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,107,107,0.3);
+        }
+        
+        .back-btn {
+            background: var(--dark-tertiary);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .back-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .episodes-list {
+            background: var(--dark-secondary);
+            padding: 30px;
+            border-radius: 15px;
+        }
+        
+        .episodes-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .episode-item {
+            background: var(--dark-tertiary);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .episode-item:hover {
+            background: var(--primary-color);
+            transform: translateX(5px);
+        }
+        
+        .episode-number {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .episode-item:hover .episode-number {
+            color: white;
+        }
+        
+        .error-message {
+            background: #e74c3c;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-secondary);
+        }
+        
+        .loading i {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <a href="index.html" class="control-btn back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Назад к каталогу
+        </a>
+        
+        <div id="loadingMessage" class="loading">
+            <i class="fas fa-spinner"></i>
+            <p>Загрузка видео...</p>
+        </div>
+        
+        <div id="errorMessage" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Не удалось загрузить видео. Проверьте файл и попробуйте снова.</p>
+        </div>
+        
+        <div class="video-player" id="videoPlayer" style="display: none;">
+            <video id="videoElement" controls>
+                Ваш браузер не поддерживает видео плеер.
+            </video>
+        </div>
+        
+        <div class="player-info" id="playerInfo" style="display: none;">
+            <h1 class="player-title" id="playerTitle">Название видео</h1>
+            <div class="player-meta" id="playerMeta">
+                Информация о видео
+            </div>
+            <div class="player-controls">
+                <button class="control-btn" id="downloadBtn">
+                    <i class="fas fa-download"></i>
+                    Скачать
+                </button>
+                <button class="control-btn" id="shareBtn">
+                    <i class="fas fa-share"></i>
+                    Поделиться
+                </button>
+                <button class="control-btn" id="fullscreenBtn">
+                    <i class="fas fa-expand"></i>
+                    Полный экран
+                </button>
+            </div>
+        </div>
+        
+        <div class="episodes-list" id="episodesList" style="display: none;">
+            <h2 class="episodes-title">Другие эпизоды</h2>
+            <div id="episodesContainer">
+                <!-- Эпизоды будут добавлены через JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('id');
+            const videoFile = urlParams.get('file');
+            
+            const videoElement = document.getElementById('videoElement');
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const playerInfo = document.getElementById('playerInfo');
+            const playerTitle = document.getElementById('playerTitle');
+            const playerMeta = document.getElementById('playerMeta');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const shareBtn = document.getElementById('shareBtn');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const episodesList = document.getElementById('episodesList');
+            const episodesContainer = document.getElementById('episodesContainer');
+            
+            const animeData = [
+                {
+                    id: 1,
+                    title: "Erekshe",
+                    genre: "action",
+                    episodes: 1,
+                    year: 2026,
+                    type: "Озвучка",
+                    rating: 4.9,
+                    image: "https://via.placeholder.com/200x300/e74c3c/ffffff?text=Erekshe",
+                    videoFile: "EREKSHE(2026).mp4"
+                },
+                {
+                    id: 2,
+                    title: "Breaking Bad S5E13",
+                    genre: "action",
+                    episodes: 1,
+                    year: 2023,
+                    type: "Субтитры",
+                    rating: 4.8,
+                    image: "https://via.placeholder.com/200x300/9b59b6/ffffff?text=Breaking+Bad",
+                    videoFile: "BreakingbadS5E13.m3u8"
+                },
+                {
+                    id: 3,
+                    title: "Breaking Bad S5E14",
+                    genre: "action",
+                    episodes: 1,
+                    year: 2023,
+                    type: "Озвучка",
+                    rating: 4.9,
+                    image: "https://via.placeholder.com/200x300/e91e63/ffffff?text=Breaking+Bad",
+                    videoFile: "BreakingBadS5E14.m3u8"
+                },
+                {
+                    id: 4,
+                    title: "Breaking Bad S5E15",
+                    genre: "action",
+                    episodes: 1,
+                    year: 2023,
+                    type: "Субтитры",
+                    rating: 4.7,
+                    image: "https://via.placeholder.com/200x300/ffc107/ffffff?text=Breaking+Bad",
+                    videoFile: "BreakingBadS5E15.m3u8"
+                },
+                {
+                    id: 5,
+                    title: "Breaking Bad S5E16",
+                    genre: "action",
+                    episodes: 1,
+                    year: 2023,
+                    type: "Озвучка",
+                    rating: 4.8,
+                    image: "https://via.placeholder.com/200x300/ff9800/ffffff?text=Breaking+Bad",
+                    videoFile: "BreakingBadS5E16.m3u8"
+                }
+            ];
+            
+            function loadVideo() {
+                let currentAnime = null;
+                
+                if (videoId) {
+                    currentAnime = animeData.find(anime => anime.id == videoId);
+                } else if (videoFile) {
+                    currentAnime = animeData.find(anime => anime.videoFile === videoFile);
+                }
+                
+                if (!currentAnime) {
+                    showError();
+                    return;
+                }
+                
+                playerTitle.textContent = currentAnime.title;
+                playerMeta.innerHTML = `
+                    ${currentAnime.episodes} серий • ${currentAnime.year} • ${currentAnime.type} • 
+                    <i class="fas fa-star"></i> ${currentAnime.rating}
+                `;
+                
+                const videoSrc = currentAnime.videoFile;
+                
+                if (videoSrc.endsWith('.m3u8')) {
+                    // Для HLS потоков
+                    if (Hls.isSupported()) {
+                        const hls = new Hls();
+                        hls.loadSource(videoSrc);
+                        hls.attachMedia(videoElement);
+                        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                            showPlayer();
+                        });
+                        hls.on(Hls.Events.ERROR, function(event, data) {
+                            console.error('HLS error:', data);
+                            showError();
+                        });
+                    } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+                        videoElement.src = videoSrc;
+                        videoElement.addEventListener('loadedmetadata', showPlayer);
+                        videoElement.addEventListener('error', showError);
+                    } else {
+                        showError();
+                    }
+                } else {
+                    // Для обычных видео файлов
+                    videoElement.src = videoSrc;
+                    videoElement.addEventListener('loadedmetadata', showPlayer);
+                    videoElement.addEventListener('error', showError);
+                }
+                
+                // Настройка кнопок
+                downloadBtn.onclick = () => {
+                    window.open(videoSrc, '_blank');
+                };
+                
+                shareBtn.onclick = () => {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: currentAnime.title,
+                            url: window.location.href
+                        });
+                    } else {
+                        navigator.clipboard.writeText(window.location.href);
+                        alert('Ссылка скопирована в буфер обмена!');
+                    }
+                };
+                
+                fullscreenBtn.onclick = () => {
+                    if (videoElement.requestFullscreen) {
+                        videoElement.requestFullscreen();
+                    } else if (videoElement.webkitRequestFullscreen) {
+                        videoElement.webkitRequestFullscreen();
+                    } else if (videoElement.msRequestFullscreen) {
+                        videoElement.msRequestFullscreen();
+                    }
+                };
+                
+                // Показать похожие эпизоды
+                showRelatedEpisodes(currentAnime);
+            }
+            
+            function showPlayer() {
+                loadingMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+                videoPlayer.style.display = 'block';
+                playerInfo.style.display = 'block';
+                videoElement.play().catch(e => {
+                    console.log('Автовоспроизведение заблокировано браузером');
+                });
+            }
+            
+            function showError() {
+                loadingMessage.style.display = 'none';
+                videoPlayer.style.display = 'none';
+                playerInfo.style.display = 'none';
+                errorMessage.style.display = 'block';
+            }
+            
+            function showRelatedEpisodes(currentAnime) {
+                const relatedAnime = animeData.filter(anime => 
+                    anime.title.includes('Breaking Bad') && anime.id !== currentAnime.id
+                );
+                
+                if (relatedAnime.length > 0) {
+                    episodesList.style.display = 'block';
+                    episodesContainer.innerHTML = relatedAnime.map(anime => `
+                        <div class="episode-item" onclick="loadEpisode(${anime.id})">
+                            <div>
+                                <span class="episode-number">${anime.title}</span>
+                            </div>
+                            <div>
+                                <span>${anime.type}</span>
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            window.loadEpisode = function(id) {
+                window.location.href = `player.html?id=${id}`;
+            };
+            
+            // Загрузка HLS библиотеки если нужно
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/hls.js@latest';
+            script.onload = loadVideo;
+            script.onerror = () => {
+                // Если HLS не загрузился, пробуем без него
+                loadVideo();
+            };
+            document.head.appendChild(script);
+        });
+    </script>
+</body>
+</html>
